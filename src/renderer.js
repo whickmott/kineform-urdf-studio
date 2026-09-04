@@ -881,6 +881,8 @@ export class RobotRenderer {
         color: new THREE.Color(this.viewportSettings.floorColour),
         roughness: 1,
         metalness: 0,
+	transparent: true,
+	opacity: 0.5,
         side: THREE.DoubleSide
       })
     );
