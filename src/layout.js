@@ -3,7 +3,7 @@ const STORAGE_KEY = "urdf-studio-layout-v1";
 const DEFAULT_STATE = {
   leftOpen: true,
   rightOpen: true,
-  bottomOpen: false,
+  bottomOpen: true,
   leftWidth: 286,
   rightWidth: 320,
   bottomHeight: 220,

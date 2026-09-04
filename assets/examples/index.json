@@ -10,14 +10,14 @@
     },
     {
       "id": "turtle-style-bot",
-      "name": "Turtle-style mobile robot",
+      "name": "Turtle-style Robot",
       "description": "A compact differential-drive robot with lidar and a tilting front camera.",
       "urdf": "turtle-style-bot/turtle-style-bot.urdf",
       "assets": []
     },
     {
       "id": "complex-hexapod",
-      "name": "Complex hexapod",
+      "name": "Complex Hexapod",
       "description": "A six-legged robot with 18 actuated leg joints, articulated sensor tower and stereo camera.",
       "urdf": "complex-hexapod/complex-hexapod.urdf",
       "assets": []

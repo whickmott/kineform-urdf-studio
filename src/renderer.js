@@ -854,60 +854,109 @@ export class RobotRenderer {
   }
 
   rebuildFloorAndGrid() {
-    if (this.floor) {
-      this.scene.remove(this.floor);
-      this.floor.geometry?.dispose?.();
-      this.floor.material?.dispose?.();
-      this.floor = null;
-    }
+  if (this.floor) {
+    this.scene.remove(this.floor);
 
-    if (this.grid) {
-      this.scene.remove(this.grid);
-      this.grid.geometry?.dispose?.();
-      if (Array.isArray(this.grid.material)) {
-        for (const material of this.grid.material) material.dispose?.();
+    this.floor.traverse(object => {
+      object.geometry?.dispose?.();
+
+      if (Array.isArray(object.material)) {
+        for (const material of object.material) material.dispose?.();
       } else {
-        this.grid.material?.dispose?.();
+        object.material?.dispose?.();
       }
-      this.grid = null;
+    });
+
+    this.floor = null;
+  }
+
+  if (this.grid) {
+    this.scene.remove(this.grid);
+    this.grid.geometry?.dispose?.();
+
+    if (Array.isArray(this.grid.material)) {
+      for (const material of this.grid.material) material.dispose?.();
+    } else {
+      this.grid.material?.dispose?.();
     }
 
-    const size = Math.max(0.1, Number(this.viewportSettings.gridSize) || 20);
-    const divisions = Math.max(1, Math.round(Number(this.viewportSettings.gridDivisions) || 40));
-
-this.floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(size, size),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color(this.viewportSettings.floorColour),
-        roughness: 1,
-        metalness: 0,
-        transparent: true,
-        opacity: 0.5,
-        depthWrite: false,
-        side: THREE.DoubleSide
-      })
-    );
-    this.floor.rotation.x = -Math.PI / 2;
-    this.floor.position.y = -0.002;
-    this.floor.receiveShadow = Boolean(this.viewportSettings.shadows);
-    this.floor.castShadow = false;
-    this.floor.visible = Boolean(this.viewportSettings.floorVisible);
-    this.floor.userData.viewportFloor = true;
-    this.scene.add(this.floor);
-
-    this.grid = new THREE.GridHelper(
-      size,
-      divisions,
-      new THREE.Color(this.viewportSettings.gridCentre),
-      new THREE.Color(this.viewportSettings.gridLines)
-    );
-    this.grid.position.y = 0;
-    this.grid.material.transparent = true;
-    this.grid.material.opacity = Math.min(1, Math.max(0, Number(this.viewportSettings.gridOpacity) || 0));
-    this.grid.visible = Boolean(this.viewportSettings.gridVisible);
-    this.grid.renderOrder = 2;
-    this.scene.add(this.grid);
+    this.grid = null;
   }
+
+  const size = Math.max(
+    0.1,
+    Number(this.viewportSettings.gridSize) || 20
+  );
+
+  const divisions = Math.max(
+    1,
+    Math.round(Number(this.viewportSettings.gridDivisions) || 40)
+  );
+
+  this.floor = new THREE.Group();
+  this.floor.position.y = -0.002;
+  this.floor.visible = Boolean(this.viewportSettings.floorVisible);
+  this.floor.receiveShadow = Boolean(this.viewportSettings.shadows);
+  this.floor.userData.viewportFloor = true;
+
+  const floorTint = new THREE.Mesh(
+    new THREE.PlaneGeometry(size, size),
+    new THREE.MeshStandardMaterial({
+      color: new THREE.Color(this.viewportSettings.floorColour),
+      roughness: 1,
+      metalness: 0,
+      transparent: true,
+      opacity: 0.18,
+      depthWrite: false,
+      side: THREE.DoubleSide
+    })
+  );
+
+  floorTint.rotation.x = -Math.PI / 2;
+  floorTint.receiveShadow = false;
+  floorTint.castShadow = false;
+  floorTint.renderOrder = 1;
+
+  const shadowReceiver = new THREE.Mesh(
+    new THREE.PlaneGeometry(size, size),
+    new THREE.ShadowMaterial({
+      color: 0x000000,
+      transparent: true,
+      opacity: 0.42,
+      depthWrite: false,
+      side: THREE.DoubleSide
+    })
+  );
+
+  shadowReceiver.rotation.x = -Math.PI / 2;
+  shadowReceiver.position.y = 0.0005;
+  shadowReceiver.receiveShadow = Boolean(this.viewportSettings.shadows);
+  shadowReceiver.castShadow = false;
+  shadowReceiver.renderOrder = 2;
+
+  this.floor.add(floorTint);
+  this.floor.add(shadowReceiver);
+  this.scene.add(this.floor);
+
+  this.grid = new THREE.GridHelper(
+    size,
+    divisions,
+    new THREE.Color(this.viewportSettings.gridCentre),
+    new THREE.Color(this.viewportSettings.gridLines)
+  );
+
+  this.grid.position.y = 0;
+  this.grid.material.transparent = true;
+  this.grid.material.opacity = Math.min(
+    1,
+    Math.max(0, Number(this.viewportSettings.gridOpacity) || 0)
+  );
+  this.grid.material.depthWrite = false;
+  this.grid.visible = Boolean(this.viewportSettings.gridVisible);
+  this.grid.renderOrder = 3;
+
+  this.scene.add(this.grid);
+}
 
   setViewportSettings(settings = {}) {
     this.viewportSettings = { ...this.viewportSettings, ...settings };
