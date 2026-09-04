@@ -37,8 +37,6 @@ The application is static and uses relative paths, so the repository itself is s
 
 Issues and pull requests are welcome.
 
-For changes to the application, keep the existing static structure and avoid committing generated build output or browser-local data.
-
 Bundled examples are registered in:
 
 ```text
