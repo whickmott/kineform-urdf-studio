@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset><unit name="metre" meter="1"/><up_axis>Z_UP</up_axis></asset>
+  <library_images><image id="tex-image"><init_from>../textures/lens-glass.png</init_from></image></library_images>
+  <library_effects><effect id="tex-effect"><profile_COMMON><newparam sid="surface"><surface type="2D"><init_from>tex-image</init_from></surface></newparam><newparam sid="sampler"><sampler2D><source>surface</source></sampler2D></newparam><technique sid="common"><lambert><diffuse><texture texture="sampler" texcoord="UVSET0"/></diffuse></lambert></technique></profile_COMMON></effect></library_effects>
+  <library_materials><material id="tex-material" name="lens"><instance_effect url="#tex-effect"/></material></library_materials>
+  <library_geometries><geometry id="lens-geometry" name="lens"><mesh>
+    <source id="positions"><float_array id="positions-array" count="24">-0.09 -0.09 -0.05 0.09 -0.09 -0.05 0.09 0.09 -0.05 -0.09 0.09 -0.05 -0.09 -0.09 0.05 0.09 -0.09 0.05 0.09 0.09 0.05 -0.09 0.09 0.05</float_array><technique_common><accessor source="#positions-array" count="8" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
+    <source id="uvs"><float_array id="uvs-array" count="16">0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1</float_array><technique_common><accessor source="#uvs-array" count="8" stride="2"><param name="S" type="float"/><param name="T" type="float"/></accessor></technique_common></source>
+    <vertices id="vertices"><input semantic="POSITION" source="#positions"/></vertices>
+    <triangles count="12" material="material"><input semantic="VERTEX" source="#vertices" offset="0"/><input semantic="TEXCOORD" source="#uvs" offset="1" set="0"/><p>0 0 2 2 1 1 0 0 3 3 2 2 4 4 5 5 6 6 4 4 6 6 7 7 0 0 1 1 5 5 0 0 5 5 4 4 1 1 2 2 6 6 1 1 6 6 5 5 2 2 3 3 7 7 2 2 7 7 6 6 3 3 0 0 4 4 3 3 4 4 7 7</p></triangles>
+  </mesh></geometry></library_geometries>
+  <library_visual_scenes><visual_scene id="Scene"><node id="lens"><instance_geometry url="#lens-geometry"><bind_material><technique_common><instance_material symbol="material" target="#tex-material"><bind_vertex_input semantic="UVSET0" input_semantic="TEXCOORD" input_set="0"/></instance_material></technique_common></bind_material></instance_geometry></node></visual_scene></library_visual_scenes>
+  <scene><instance_visual_scene url="#Scene"/></scene>
+</COLLADA>

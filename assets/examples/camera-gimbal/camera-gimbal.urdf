@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot name="camera_gimbal" version="1.2">
+  <material name="housing">
+    <color rgba="0.18 0.2 0.23 1"/>
+  </material>
+  <material name="accent">
+    <color rgba="0.78 0.21 0.15 1"/>
+  </material>
+  <material name="lens">
+    <color rgba="0.08 0.22 0.42 1"/>
+  </material>
+  <link name="base_link">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="3.2"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><cylinder radius="0.28" length="0.09"/></geometry><material name="housing"/></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><cylinder radius="0.28" length="0.09"/></geometry></collision>
+  </link>
+  <link name="yaw_frame">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="1.5"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+    <visual><origin xyz="0 0 0.12" rpy="0 0 0"/><geometry><mesh filename="meshes/yaw-housing.obj"/></geometry><material name="accent"/></visual>
+    <collision><origin xyz="0 0 0.12" rpy="0 0 0"/><geometry><box size="0.42 0.42 0.16"/></geometry></collision>
+  </link>
+  <link name="pitch_frame">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.9"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><box size="0.32 0.16 0.24"/></geometry><material name="housing"/></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><box size="0.32 0.16 0.24"/></geometry></collision>
+  </link>
+  <link name="camera_optical">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.35"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+    <visual><origin xyz="0.11 0 0" rpy="0 1.5708 0"/><geometry><mesh filename="meshes/lens.dae"/></geometry><material name="lens"/></visual>
+    <collision><origin xyz="0.11 0 0" rpy="0 1.5708 0"/><geometry><cylinder radius="0.09" length="0.1"/></geometry></collision>
+  </link>
+  <link name="focus_ring">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.08"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 1.5708 0"/><geometry><cylinder radius="0.105" length="0.035"/></geometry><material name="accent"/></visual>
+    <collision><origin xyz="0 0 0" rpy="0 1.5708 0"/><geometry><cylinder radius="0.105" length="0.035"/></geometry></collision>
+  </link>
+  <joint name="yaw_joint" type="continuous"><parent link="base_link"/><child link="yaw_frame"/><origin xyz="0 0 0.09" rpy="0 0 0"/><axis xyz="0 0 1"/></joint>
+  <joint name="pitch_joint" type="revolute"><parent link="yaw_frame"/><child link="pitch_frame"/><origin xyz="0 0 0.24" rpy="0 0 0"/><axis xyz="0 1 0"/><limit lower="-1.4" upper="1.4" effort="8" velocity="2.5"/><dynamics damping="0.08" friction="0.02"/></joint>
+  <joint name="camera_joint" type="fixed"><parent link="pitch_frame"/><child link="camera_optical"/><origin xyz="0.16 0 0" rpy="0 0 0"/></joint>
+  <joint name="focus_joint" type="continuous"><parent link="camera_optical"/><child link="focus_ring"/><origin xyz="0.18 0 0" rpy="0 1.5708 0"/><axis xyz="1 0 0"/><mimic joint="yaw_joint" multiplier="0.12" offset="0"/></joint>
+  <ros2_control name="GimbalSystem" type="system"><hardware><plugin>mock_components/GenericSystem</plugin></hardware><joint name="yaw_joint"><command_interface name="position"/><state_interface name="position"/></joint><joint name="pitch_joint"><command_interface name="position"/><state_interface name="position"/></joint></ros2_control>
+</robot>

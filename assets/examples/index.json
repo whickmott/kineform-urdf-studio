@@ -9,63 +9,67 @@
       "assets": []
     },
     {
-      "id": "ros-urdf-tutorial",
-      "name": "ROS URDF Tutorial",
-      "description": "R2D2-like tutorial robot with current ROS 2 DAE assets. BSD-3-Clause.",
-      "urdf": "ros-urdf-tutorial/ros_urdf_tutorial.urdf",
+      "id": "warehouse-rover",
+      "name": "Warehouse rover",
+      "description": "Differential-drive rover with a textured DAE chassis, STL wheels and a lidar.",
+      "urdf": "warehouse-rover/warehouse-rover.urdf",
       "assets": [
-        "https://cdn.jsdelivr.net/gh/ros/urdf_tutorial@ros2/meshes/l_finger.dae",
-        "https://cdn.jsdelivr.net/gh/ros/urdf_tutorial@ros2/meshes/l_finger_tip.dae"
+        "warehouse-rover/meshes/chassis.dae",
+        "warehouse-rover/meshes/wheel.stl",
+        "warehouse-rover/textures/rover-checker.png"
       ]
     },
     {
-      "id": "franka-panda",
-      "name": "Franka Emika Panda \u2014 Franka Robotics",
-      "description": "Detailed Panda DAE visuals, STL collisions, seven-axis arm and mimic gripper. Apache-2.0.",
-      "urdf": "franka-panda/panda.urdf",
+      "id": "scara-cell",
+      "name": "SCARA pick-and-place cell",
+      "description": "Four-axis industrial arm demonstrating OBJ and STL assets plus revolute and prismatic joints.",
+      "urdf": "scara-cell/scara-cell.urdf",
       "assets": [
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/link0.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/link0.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/link1.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/link1.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/link2.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/link2.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/link3.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/link3.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/link4.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/link4.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/link5.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/link5.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/link6.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/link6.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/link7.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/link7.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/hand.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/hand.stl",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/visual/finger.dae",
-        "https://cdn.jsdelivr.net/gh/frankarobotics/franka_ros@develop/franka_description/meshes/collision/finger.stl"
+        "scara-cell/meshes/pedestal.obj",
+        "scara-cell/meshes/gripper.stl"
       ]
     },
     {
-      "id": "universal-robots-ur5e",
-      "name": "Universal Robots UR5e",
-      "description": "Detailed UR5e DAE visual model with six articulated joints. BSD-3-Clause.",
-      "urdf": "universal-robots-ur5e/ur5e.urdf",
+      "id": "inspection-drone",
+      "name": "Inspection drone",
+      "description": "Quadrotor with a textured DAE frame, OBJ camera and continuous rotor joints.",
+      "urdf": "inspection-drone/inspection-drone.urdf",
       "assets": [
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/visual/base.dae",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/collision/base.stl",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/visual/shoulder.dae",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/collision/shoulder.stl",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/visual/upperarm.dae",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/collision/upperarm.stl",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/visual/forearm.dae",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/collision/forearm.stl",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/visual/wrist1.dae",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/collision/wrist1.stl",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/visual/wrist2.dae",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/collision/wrist2.stl",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/visual/wrist3.dae",
-        "https://cdn.jsdelivr.net/gh/UniversalRobots/Universal_Robots_ROS2_Description@4.3.1/meshes/ur5e/collision/wrist3.stl"
+        "inspection-drone/meshes/frame.dae",
+        "inspection-drone/meshes/camera.obj",
+        "inspection-drone/textures/drone-panels.png"
+      ]
+    },
+    {
+      "id": "delta-picker",
+      "name": "Delta picker",
+      "description": "Parallel-style pick-and-place mechanism with three arm branches and mixed mesh formats.",
+      "urdf": "delta-picker/delta-picker.urdf",
+      "assets": [
+        "delta-picker/meshes/top-platform.stl",
+        "delta-picker/meshes/end-effector.obj"
+      ]
+    },
+    {
+      "id": "quadruped",
+      "name": "Compact quadruped",
+      "description": "Branched four-legged robot demonstrating capsules, a textured DAE shell and repeated STL feet.",
+      "urdf": "quadruped/quadruped.urdf",
+      "assets": [
+        "quadruped/meshes/body.dae",
+        "quadruped/meshes/foot.stl",
+        "quadruped/textures/quadruped-shell.png"
+      ]
+    },
+    {
+      "id": "camera-gimbal",
+      "name": "Camera gimbal",
+      "description": "Two-axis gimbal with OBJ and textured DAE parts, joint dynamics, mimic and ROS 2 Control.",
+      "urdf": "camera-gimbal/camera-gimbal.urdf",
+      "assets": [
+        "camera-gimbal/meshes/yaw-housing.obj",
+        "camera-gimbal/meshes/lens.dae",
+        "camera-gimbal/textures/lens-glass.png"
       ]
     }
   ]
