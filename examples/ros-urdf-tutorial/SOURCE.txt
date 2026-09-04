@@ -1,0 +1,13 @@
+ROS URDF Tutorial
+
+Upstream source:
+https://github.com/ros/urdf_tutorial
+
+Reference URDF:
+https://github.com/ros/urdf_tutorial/blob/ros2/urdf/07-physics.urdf
+
+Licence: BSD-3-Clause
+
+KineForm uses the current ROS 2 DAE finger assets. Older tutorial revisions used
+separate TIFF texture files; those stale texture URLs are deliberately not
+included because the current ROS 2 assets supersede them.

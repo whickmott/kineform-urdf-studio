@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!--
+  Universal Robots UR5e example.
+  Adapted from Universal_Robots_ROS2_Description.
+  Upstream: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description
+  Licence: BSD-3-Clause for UR5e content.
+  Modified into plain URDF for KineForm. DAE visual materials are preserved.
+  See LICENSE and SOURCE.txt.
+-->
+<robot name="ur5e">
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/visual/base.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/collision/base.stl"/></geometry>
+    </collision>
+    <inertial><mass value="1"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <link name="shoulder_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/visual/shoulder.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/collision/shoulder.stl"/></geometry>
+    </collision>
+    <inertial><mass value="1"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <link name="upper_arm_link">
+    <visual>
+      <origin xyz="0 0 0.138" rpy="1.5707963267948966 0 -1.5707963267948966"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/visual/upperarm.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.138" rpy="1.5707963267948966 0 -1.5707963267948966"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/collision/upperarm.stl"/></geometry>
+    </collision>
+    <inertial><mass value="1"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <link name="forearm_link">
+    <visual>
+      <origin xyz="0 0 0.007" rpy="1.5707963267948966 0 -1.5707963267948966"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/visual/forearm.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.007" rpy="1.5707963267948966 0 -1.5707963267948966"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/collision/forearm.stl"/></geometry>
+    </collision>
+    <inertial><mass value="1"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <link name="wrist_1_link">
+    <visual>
+      <origin xyz="0 0 -0.127" rpy="1.5707963267948966 0 0"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/visual/wrist1.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.127" rpy="1.5707963267948966 0 0"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/collision/wrist1.stl"/></geometry>
+    </collision>
+    <inertial><mass value="1"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <link name="wrist_2_link">
+    <visual>
+      <origin xyz="0 0 -0.0997" rpy="0 0 0"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/visual/wrist2.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0997" rpy="0 0 0"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/collision/wrist2.stl"/></geometry>
+    </collision>
+    <inertial><mass value="1"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <link name="wrist_3_link">
+    <visual>
+      <origin xyz="0 -0.0005 -0.0989" rpy="1.5707963267948966 0 0"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/visual/wrist3.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.0005 -0.0989" rpy="1.5707963267948966 0 0"/>
+      <geometry><mesh filename="package://ur_description/meshes/ur5e/collision/wrist3.stl"/></geometry>
+    </collision>
+    <inertial><mass value="1"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <joint name="shoulder_pan_joint" type="revolute">
+    <origin xyz="0 0 0.1625" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="shoulder_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="150" lower="-6.28318530718" upper="6.28318530718" velocity="3.14159265359"/>
+  </joint>
+  <joint name="shoulder_lift_joint" type="revolute">
+    <origin xyz="0 0 0" rpy="1.570796327 0 0"/>
+    <parent link="shoulder_link"/>
+    <child link="upper_arm_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="150" lower="-6.28318530718" upper="6.28318530718" velocity="3.14159265359"/>
+  </joint>
+  <joint name="elbow_joint" type="revolute">
+    <origin xyz="-0.425 0 0" rpy="0 0 0"/>
+    <parent link="upper_arm_link"/>
+    <child link="forearm_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="150" lower="-3.14159265359" upper="3.14159265359" velocity="3.14159265359"/>
+  </joint>
+  <joint name="wrist_1_joint" type="revolute">
+    <origin xyz="-0.3922 0 0.1333" rpy="0 0 0"/>
+    <parent link="forearm_link"/>
+    <child link="wrist_1_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="28" lower="-6.28318530718" upper="6.28318530718" velocity="6.28318530718"/>
+  </joint>
+  <joint name="wrist_2_joint" type="revolute">
+    <origin xyz="0 -0.0997 0" rpy="1.570796327 0 0"/>
+    <parent link="wrist_1_link"/>
+    <child link="wrist_2_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="28" lower="-6.28318530718" upper="6.28318530718" velocity="6.28318530718"/>
+  </joint>
+  <joint name="wrist_3_joint" type="continuous">
+    <origin xyz="0 0.0996 0" rpy="1.57079632659 3.14159265359 3.14159265359"/>
+    <parent link="wrist_2_link"/>
+    <child link="wrist_3_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="28" velocity="6.28318530718"/>
+  </joint>
+</robot>
