@@ -875,14 +875,15 @@ export class RobotRenderer {
     const size = Math.max(0.1, Number(this.viewportSettings.gridSize) || 20);
     const divisions = Math.max(1, Math.round(Number(this.viewportSettings.gridDivisions) || 40));
 
-    this.floor = new THREE.Mesh(
+this.floor = new THREE.Mesh(
       new THREE.PlaneGeometry(size, size),
       new THREE.MeshStandardMaterial({
         color: new THREE.Color(this.viewportSettings.floorColour),
         roughness: 1,
         metalness: 0,
-	transparent: true,
-	opacity: 0.5,
+        transparent: true,
+        opacity: 0.5,
+        depthWrite: false,
         side: THREE.DoubleSide
       })
     );
