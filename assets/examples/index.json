@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "examples": [
+    {
+      "id": "basic-arm",
+      "name": "Basic robot arm",
+      "description": "A small articulated arm using primitive geometry.",
+      "urdf": "basic-arm/basic-arm.urdf",
+      "assets": []
+    }
+  ]
+}

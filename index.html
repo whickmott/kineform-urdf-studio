@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html lang="en-GB">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="URDF Studio by KineForm, a browser-based robot description viewer, editor and builder." name="description"/>
+<title>KineForm / URDF Studio</title>
+<link href="./assets/favicon.ico" rel="icon" sizes="any"/>
+<link href="./assets/kineform-mark.svg" rel="icon" type="image/svg+xml"/>
+<link href="./assets/kineform-mark-180.png" rel="apple-touch-icon"/>
+<link href="./styles.css" rel="stylesheet"/>
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+<header class="topbar">
+<div class="brand">
+<img alt="" aria-hidden="true" class="brand-mark" height="38" src="./assets/kineform-mark.svg" width="38"/>
+<div class="brand-copy">
+<div class="brand-line"><span class="brand-family">KineForm</span><span class="brand-slash">/</span><h1>URDF Studio</h1></div>
+<p>Robot description workbench</p>
+</div>
+</div>
+<div class="toolbar">
+<label class="button primary-action">
+        Open URDF
+        <input accept=".urdf,.xml,text/xml,application/xml" aria-label="Open URDF" hidden="" id="urdf-file" name="urdf_file" type="file"/>
+</label>
+<button id="new-robot" type="button">New</button><label class="example-control" title="Load an immutable bundled example as a working copy"><span>Example</span><select aria-label="Load example robot" id="example-select" name="example_select"><option value="">Choose…</option></select></label>
+<button id="export-urdf" type="button">Export</button><button disabled="" id="undo-edit" title="Undo" type="button">Undo</button><button disabled="" id="redo-edit" title="Redo" type="button">Redo</button><label class="urdf-version-control" title="Target URDF version"><span>URDF</span><select aria-label="Target URDF version" id="urdf-version" name="urdf_version"><option value="1.0">1.0</option><option value="1.1">1.1</option><option value="1.2">1.2</option></select></label>
+<span aria-hidden="true" class="toolbar-divider"></span>
+<div aria-label="Workspace panels" class="panel-toggles" role="group">
+<button class="active" id="toggle-left-dock" title="Show or hide robot workspace" type="button">Robot</button>
+<button class="active" id="toggle-right-dock" title="Show or hide inspector" type="button">Inspector</button>
+<button class="active" id="toggle-bottom-dock" title="Show or hide bottom model tools" type="button">Source</button>
+</div>
+<div aria-label="Application information" class="app-meta">
+<a href="https://whickmott.github.io/" rel="noopener" target="_blank">William Hickmott</a>
+<button class="app-version app-version-button" id="about-app" type="button">v1.0.0</button>
+</div>
+</div>
+</header>
+<input accept=".stl,.obj,.dae,.png,.jpg,.jpeg,.webp,.gif,.bmp,.tif,.tiff" aria-label="Import mesh and texture assets" hidden="" id="mesh-files" multiple="" name="mesh_files" type="file"/>
+<main class="workspace" id="workspace">
+<aside aria-label="Robot workspace" class="dock left-dock" id="left-dock">
+<section class="dock-pane" data-dock-pane="structure" id="pane-structure">
+<header class="dock-pane-head">
+<button aria-label="Collapse structure panel" class="pane-collapse" data-toggle-pane="structure" title="Collapse or expand" type="button">▾</button>
+<div class="dock-pane-title">
+<span class="eyebrow">Structure</span>
+<h2 id="robot-title">Robot</h2>
+</div>
+<div class="mini-actions">
+<button class="icon-button" id="add-link" title="Add link" type="button">+ Link</button>
+<button class="icon-button" id="add-joint" title="Add joint" type="button">+ Joint</button>
+</div>
+</header>
+<div class="dock-pane-body structure-body">
+<div class="validation-summary" id="validation-summary"></div>
+<div class="tree" id="tree"></div>
+</div>
+</section>
+<div class="stack-splitter" data-stack-splitter="structure:meshes" title="Drag to resize panels"></div>
+<section class="dock-pane" data-dock-pane="meshes" id="pane-meshes">
+<header class="dock-pane-head">
+<button aria-label="Collapse assets panel" class="pane-collapse" data-toggle-pane="meshes" title="Collapse or expand" type="button">▾</button>
+<div class="dock-pane-title">
+<span class="eyebrow">Local assets</span>
+<h2>Assets</h2>
+</div>
+<button class="icon-button" id="mesh-library-add" type="button">+ Asset</button>
+</header>
+<div class="dock-pane-body mesh-body">
+<div class="mesh-library-meta" id="mesh-library-meta"></div>
+<div class="mesh-library" id="mesh-library"></div>
+</div>
+</section>
+<div class="stack-splitter" data-stack-splitter="meshes:joints" title="Drag to resize panels"></div>
+<section class="dock-pane" data-dock-pane="joints" id="pane-joints">
+<header class="dock-pane-head">
+<button aria-label="Collapse joint controls" class="pane-collapse" data-toggle-pane="joints" title="Collapse or expand" type="button">▾</button>
+<div class="dock-pane-title">
+<span class="eyebrow">Pose</span>
+<h2>Joint controls</h2>
+</div>
+</header>
+<div class="dock-pane-body joint-body">
+<div class="joint-controls" id="joint-controls"></div>
+</div>
+</section>
+</aside>
+<div aria-label="Resize left workspace" aria-orientation="vertical" class="workspace-splitter vertical left" id="left-splitter" role="separator"></div><div aria-label="Viewport and source workspace" class="centre-workspace" id="centre-workspace"><section class="viewport-shell">
+<div aria-label="3D robot viewport" class="viewport" id="viewport"></div>
+<div class="viewport-toolbar">
+<div aria-label="Transform mode" class="segmented" role="group">
+<button class="active" id="select-mode" type="button">Select</button>
+<button id="move-mode" type="button">Move</button>
+<button id="rotate-mode" type="button">Rotate</button>
+</div>
+<div aria-label="View toggles" class="segmented" role="group">
+<button class="active" id="toggle-visual" type="button">Visual</button>
+<button id="toggle-collision" type="button">Collision</button>
+<button id="toggle-frames" type="button">Frames</button>
+<button id="toggle-axes" type="button">Joint axes</button>
+<button id="toggle-com" type="button">COM</button>
+</div>
+<button id="frame-robot" type="button">Frame</button>
+<button id="toggle-animation" type="button">Animation</button>
+<button id="toggle-viewport-settings" type="button">Viewport</button>
+</div>
+<div class="viewport-settings" hidden="" id="viewport-settings">
+<div class="viewport-settings-head">
+<div>
+<span class="eyebrow">Display</span>
+<h2>Viewport</h2>
+</div>
+<div class="mini-actions">
+<button id="reset-layout" type="button">Reset layout</button>
+<button id="reset-viewport-settings" type="button">Reset display</button>
+</div>
+</div>
+<div class="viewport-setting-pair">
+<label><span>World colour</span><input id="viewport-background" type="color" value="#0c0f12"/></label>
+<label><span>Floor colour</span><input id="viewport-floor-colour" type="color" value="#11161a"/></label>
+</div>
+<div class="viewport-setting-pair">
+<label class="checkbox-row compact-check"><span>Floor</span><input checked="" id="viewport-floor-visible" type="checkbox"/></label>
+<label class="checkbox-row compact-check"><span>Grid</span><input checked="" id="viewport-grid-visible" type="checkbox"/></label>
+</div>
+<div class="viewport-setting-pair">
+<label><span>Centre lines</span><input id="viewport-grid-centre" type="color" value="#7894a8"/></label>
+<label><span>Grid lines</span><input id="viewport-grid-lines" type="color" value="#34414b"/></label>
+</div>
+<div class="viewport-setting-pair">
+<label><span>Grid size (m)</span><input id="viewport-grid-size" min="0.1" step="0.1" type="number" value="20"/></label>
+<label><span>Divisions</span><input id="viewport-grid-divisions" min="1" step="1" type="number" value="40"/></label>
+</div>
+<label class="viewport-setting-row"><span>Grid opacity</span><input id="viewport-grid-opacity" max="1" min="0" step="0.01" type="range" value="0.48"/></label>
+<label class="viewport-setting-row checkbox-row"><span>World axes</span><input checked="" id="viewport-world-axes" type="checkbox"/></label>
+<label class="viewport-setting-row checkbox-row"><span>Shadows</span><input checked="" id="viewport-shadows" type="checkbox"/></label>
+</div>
+<section aria-label="Joint animation editor" class="animation-panel" id="animation-panel">
+<div class="animation-toolbar">
+<div class="animation-controls">
+<button id="animation-play" type="button">Play</button>
+<button id="animation-stop" type="button">Stop</button>
+<button id="animation-capture" type="button">+ Keyframe</button>
+<button disabled="" id="animation-delete-key" type="button">Delete key</button>
+</div>
+<div class="animation-meta">
+<span id="animation-summary">0 keyframes</span>
+<span id="animation-readout">0.00 / 5.00 s</span>
+</div>
+<div class="animation-options">
+<label for="animation-duration"><span>Duration (s)</span><input id="animation-duration" min="0.1" name="animation_duration" step="0.1" type="number" value="5"/></label>
+<label class="animation-loop" for="animation-loop"><input checked="" id="animation-loop" name="animation_loop" type="checkbox"/><span>Loop</span></label>
+<button id="animation-clear" type="button">Clear</button>
+<button id="animation-export" type="button">Export</button>
+<label class="button animation-import">Import<input accept=".json,application/json" aria-label="Import animation JSON" hidden="" id="animation-import" name="animation_import" type="file"/></label>
+</div>
+</div>
+<div class="animation-timeline-wrap">
+<label class="sr-only" for="animation-timeline">Animation playhead</label>
+<input aria-label="Animation playhead" class="animation-timeline" id="animation-timeline" max="5" min="0" name="animation_timeline" step="0.005" type="range" value="0"/>
+<div aria-label="Animation keyframes" class="animation-markers" id="animation-markers"></div>
+</div>
+</section>
+<div class="viewport-hint">Left drag: orbit · right drag: pan · wheel: zoom · click: select</div>
+<div class="drop-overlay" id="drop-overlay">Drop a URDF and optional mesh / texture assets</div>
+</section><div aria-label="Resize source workspace" aria-orientation="horizontal" class="workspace-splitter horizontal" id="bottom-splitter" role="separator"></div><section aria-label="Source, diagnostics and model tools" class="dock bottom-dock" id="bottom-dock">
+<header class="bottom-dock-head">
+<div aria-label="Bottom workspace" class="dock-tabs" role="tablist">
+<button aria-selected="true" class="active" data-bottom-tab="source" id="bottom-tab-source" role="tab" type="button">URDF XML</button>
+<button aria-selected="false" data-bottom-tab="diagnostics" id="bottom-tab-diagnostics" role="tab" type="button"><span class="doctor-label">Doctor</span><span aria-hidden="true" class="doctor-badges"><span class="doctor-count error" hidden="" id="doctor-error-count">0</span><span class="doctor-count warning" hidden="" id="doctor-warning-count">0</span></span></button>
+<button aria-selected="false" data-bottom-tab="materials" id="bottom-tab-materials" role="tab" type="button">Materials</button><button aria-selected="false" data-bottom-tab="ros2" id="bottom-tab-ros2" role="tab" type="button">ROS 2 Control</button></div>
+<div class="bottom-actions source-actions" data-bottom-actions="source">
+<button id="format-xml" type="button">Format</button>
+<button id="apply-xml" type="button">Apply XML</button>
+</div>
+<div class="bottom-actions material-actions" data-bottom-actions="materials" hidden=""><button id="add-material" type="button">+ Material</button></div><button aria-label="Hide bottom workspace" class="dock-collapse" id="collapse-bottom-dock" title="Hide bottom workspace" type="button">⌄</button>
+</header>
+<div class="bottom-dock-body">
+<section class="bottom-view source-view active" data-bottom-view="source" id="bottom-view-source">
+<textarea aria-label="URDF XML editor" id="xml-editor" spellcheck="false"></textarea>
+<div class="xml-status" id="xml-status">Model and source are synchronised.</div>
+</section>
+<section class="bottom-view diagnostics-view" data-bottom-view="diagnostics" hidden="" id="bottom-view-diagnostics">
+<div class="diagnostics" id="diagnostics"></div>
+</section>
+<section class="bottom-view materials-view" data-bottom-view="materials" hidden="" id="bottom-view-materials"><div class="materials-toolbar"><div><span class="eyebrow">Robot appearance</span><h2>Global materials</h2></div><div class="materials-meta" id="materials-meta"></div></div><div class="materials-editor" id="materials-editor"></div></section><section class="bottom-view ros2-view" data-bottom-view="ros2" hidden="" id="bottom-view-ros2"><div class="ros2-toolbar"><div><span class="eyebrow">Hardware description</span><h2>ros2_control</h2></div><button id="ros2-add-control" type="button">+ Hardware</button></div><div class="ros2-editor" id="ros2-editor"></div></section></div>
+</section></div><div aria-label="Resize inspector" aria-orientation="vertical" class="workspace-splitter vertical right" id="right-splitter" role="separator"></div><aside aria-label="Inspector" class="dock right-dock inspector-panel" id="right-dock">
+<header class="dock-main-head">
+<button aria-label="Hide inspector" class="dock-collapse" id="collapse-right-dock" title="Hide inspector" type="button">›</button>
+<div>
+<span class="eyebrow">Inspector</span>
+<h2 id="inspector-title">Nothing selected</h2>
+</div>
+<button class="danger ghost" hidden="" id="delete-selected" type="button">Delete</button>
+</header>
+<div class="inspector" id="inspector">
+<div class="empty-state">Select a link or joint in the tree or viewport.</div>
+</div>
+</aside>
+</main>
+<dialog id="add-link-dialog">
+<form id="add-link-form" method="dialog">
+<div class="dialog-head">
+<div>
+<span class="eyebrow">New element</span>
+<h2>Add link</h2>
+</div>
+<button class="dialog-close" formnovalidate="" type="submit" value="cancel">×</button>
+</div>
+<label>
+        Name
+        <input autocomplete="off" id="add-link-name" name="name" required="" value="new_link"/>
+</label>
+<label>
+        Geometry
+        <select aria-label="Link geometry" id="add-link-geometry" name="geometry">
+<option value="box">Box</option>
+<option value="cylinder">Cylinder</option>
+<option value="sphere">Sphere</option><option value="capsule">Capsule (URDF 1.1+)</option>
+</select>
+</label>
+<div id="link-geometry-fields"></div>
+<label>
+        Mass (kg)
+        <input aria-label="Link mass" id="add-link-mass" min="0" name="mass" step="any" type="number" value="1"/>
+</label>
+<div class="dialog-subsection">
+<span class="eyebrow">Connection</span>
+<label>
+          Attach to
+          <select aria-label="Parent link" id="add-link-parent" name="parent">
+<option value="">Unattached / root</option>
+</select>
+</label>
+<label data-attachment-field="">
+          Joint name
+          <input autocomplete="off" id="add-link-joint-name" name="joint_name" value=""/>
+</label>
+<label data-attachment-field="">
+          Joint type
+          <select aria-label="Joint type" id="add-link-joint-type" name="joint_type">
+<option value="fixed">Fixed</option>
+<option value="revolute">Revolute</option>
+<option value="continuous">Continuous</option>
+<option value="prismatic">Prismatic</option>
+<option value="planar">Planar</option><option value="floating">Floating</option></select>
+</label>
+<fieldset data-attachment-field="">
+<legend>Joint origin xyz (m)</legend>
+<div class="triple">
+<input aria-label="Joint origin X" id="add-link-jx" name="jx" step="any" type="number" value="0"/>
+<input aria-label="Joint origin Y" id="add-link-jy" name="jy" step="any" type="number" value="0"/>
+<input aria-label="Joint origin Z" id="add-link-jz" name="jz" step="any" type="number" value="0.5"/>
+</div>
+</fieldset>
+</div>
+<menu>
+<button formnovalidate="" type="submit" value="cancel">Cancel</button>
+<button id="confirm-add-link" type="button" value="default">Add link</button>
+</menu>
+</form>
+</dialog>
+<dialog id="add-joint-dialog">
+<form id="add-joint-form" method="dialog">
+<div class="dialog-head">
+<div>
+<span class="eyebrow">New element</span>
+<h2>Add joint</h2>
+</div>
+<button class="dialog-close" formnovalidate="" type="submit" value="cancel">×</button>
+</div>
+<label>
+        Name
+        <input autocomplete="off" id="add-joint-name" name="name" required="" value="new_joint"/>
+</label>
+<label>
+        Type
+        <select aria-label="Joint type" id="add-joint-type" name="type">
+<option value="fixed">Fixed</option>
+<option value="revolute">Revolute</option>
+<option value="continuous">Continuous</option>
+<option value="prismatic">Prismatic</option>
+<option value="planar">Planar</option><option value="floating">Floating</option></select>
+</label>
+<label>
+        Parent link
+        <select aria-label="Parent link" id="add-joint-parent" name="parent"></select>
+</label>
+<label>
+        Child link
+        <select aria-label="Child link" id="add-joint-child" name="child"></select>
+</label>
+<fieldset>
+<legend>Origin xyz (m)</legend>
+<div class="triple">
+<input aria-label="Joint origin X" id="add-joint-x" name="x" step="any" type="number" value="0"/>
+<input aria-label="Joint origin Y" id="add-joint-y" name="y" step="any" type="number" value="0"/>
+<input aria-label="Joint origin Z" id="add-joint-z" name="z" step="any" type="number" value="0.5"/>
+</div>
+</fieldset>
+<menu>
+<button formnovalidate="" type="submit" value="cancel">Cancel</button>
+<button id="confirm-add-joint" type="button" value="default">Add joint</button>
+</menu>
+</form>
+</dialog>
+<dialog id="urdf-version-dialog"><form id="urdf-version-form" method="dialog"><div class="dialog-head"><div><span class="eyebrow">Compatibility conversion</span><h2 id="urdf-version-dialog-title">Change URDF version</h2></div><button class="dialog-close" formnovalidate="" type="submit" value="cancel">×</button></div><div class="version-conversion-summary" id="urdf-version-summary"></div><menu><button formnovalidate="" type="submit" value="cancel">Cancel</button><button id="confirm-urdf-version" type="button" value="default">Convert</button></menu></form></dialog>
+<dialog id="ros2-add-control-dialog">
+<form id="ros2-add-control-form" method="dialog">
+<div class="dialog-head">
+<div>
+<span class="eyebrow">ROS 2 Control</span>
+<h2>Add hardware</h2>
+</div>
+<button class="dialog-close" formnovalidate="" type="submit" value="cancel">×</button>
+</div>
+<label>
+      Name
+      <input autocomplete="off" id="ros2-new-name" name="name" required=""/>
+</label>
+<label>
+      Type
+      <select aria-label="ROS 2 Control hardware type" id="ros2-new-type" name="type">
+<option value="system">System</option>
+<option value="actuator">Actuator</option>
+<option value="sensor">Sensor</option>
+</select>
+</label>
+<label>
+      Hardware plugin
+      <input autocomplete="off" id="ros2-new-plugin" name="plugin" placeholder="package/Class" required=""/>
+</label>
+<label>
+      Hardware group
+      <input autocomplete="off" id="ros2-new-group" name="group" placeholder="optional"/>
+</label>
+<div class="inline-row">
+<label>
+        rw_rate (Hz)
+        <input id="ros2-new-rate" min="0" name="rw_rate" placeholder="default" step="1" type="number"/>
+</label>
+<label>
+        Async
+        <select aria-label="Asynchronous hardware" id="ros2-new-async" name="is_async">
+<option value="false">false</option>
+<option value="true">true</option>
+</select>
+</label>
+</div>
+<menu>
+<button formnovalidate="" type="submit" value="cancel">Cancel</button>
+<button id="confirm-ros2-add-control" type="button" value="default">Add hardware</button>
+</menu>
+</form>
+</dialog>
+<dialog id="about-dialog"><form method="dialog">
+<div class="dialog-head"><div><span class="eyebrow">KineForm</span><h2>URDF Studio</h2></div><button class="dialog-close" formnovalidate="" type="submit" value="cancel">×</button></div>
+<div class="about-copy">
+<p>Browser-based URDF viewer, editor and development workbench.</p>
+<dl>
+<dt>Author</dt><dd><a href="https://whickmott.github.io/" rel="noopener" target="_blank">William Hickmott</a></dd>
+<dt>URDF</dt><dd>1.0 · 1.1 · 1.2</dd>
+<dt>Geometry</dt><dd>STL · OBJ · DAE</dd>
+<dt>Textures</dt><dd>PNG · JPG · WebP · GIF · BMP · TIFF</dd>
+<dt>Website</dt><dd><a href="https://whickmott.github.io/" rel="noopener" target="_blank">whickmott.github.io</a></dd>
+</dl>
+</div>
+<menu><button formnovalidate="" type="submit" value="cancel">Close</button></menu>
+</form></dialog><dialog id="mobile-notice-dialog"><form method="dialog">
+<div class="dialog-head"><div><span class="eyebrow">Viewport notice</span><h2>Desktop studio recommended</h2></div></div>
+<div class="mobile-notice-copy">
+<p>KineForm URDF Studio is designed as a desktop development workspace. On a phone or similarly small touch display, viewing is supported but editing, panel management and precise robot work will be significantly less usable.</p>
+<p>For building or modifying a URDF, use a larger desktop or laptop display.</p>
+</div>
+<menu><button type="submit" value="continue">Continue anyway</button></menu>
+</form></dialog><script src="./src/app.js" type="module"></script>
+</body>
+</html>
