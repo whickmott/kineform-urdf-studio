@@ -2,131 +2,25 @@
   "version": 1,
   "examples": [
     {
-      "id": "turtlebot3-waffle",
-      "name": "TurtleBot3 Waffle",
-      "description": "ROBOTIS TurtleBot3 Waffle mobile robot.",
-      "urdf": "turtlebot3-waffle/model.urdf",
-      "assets": [
-        "turtlebot3-waffle/meshes/lds.stl",
-        "turtlebot3-waffle/meshes/left_tire.stl",
-        "turtlebot3-waffle/meshes/r200.dae",
-        "turtlebot3-waffle/meshes/r200.jpg",
-        "turtlebot3-waffle/meshes/right_tire.stl",
-        "turtlebot3-waffle/meshes/waffle_base.stl"
-      ]
+      "id": "basic-arm",
+      "name": "Basic robot arm",
+      "description": "A small articulated arm using primitive geometry.",
+      "urdf": "basic-arm/basic-arm.urdf",
+      "assets": []
     },
     {
-      "id": "unitree-go1",
-      "name": "Unitree Go1",
-      "description": "Unitree Go1 quadruped robot.",
-      "urdf": "unitree-go1/model.urdf",
-      "assets": [
-        "unitree-go1/meshes/calf.dae",
-        "unitree-go1/meshes/depthCamera.dae",
-        "unitree-go1/meshes/hip.dae",
-        "unitree-go1/meshes/thigh.dae",
-        "unitree-go1/meshes/thigh_mirror.dae",
-        "unitree-go1/meshes/trunk.dae",
-        "unitree-go1/meshes/ultraSound.dae"
-      ]
+      "id": "turtle-style-bot",
+      "name": "Turtle-style mobile robot",
+      "description": "A compact differential-drive robot with lidar and a tilting front camera.",
+      "urdf": "turtle-style-bot/turtle-style-bot.urdf",
+      "assets": []
     },
     {
-      "id": "robotis-op3",
-      "name": "ROBOTIS OP3",
-      "description": "ROBOTIS OP3 humanoid robot.",
-      "urdf": "robotis-op3/model.urdf",
-      "assets": [
-        "robotis-op3/meshes/body.stl",
-        "robotis-op3/meshes/h1.stl",
-        "robotis-op3/meshes/h2.stl",
-        "robotis-op3/meshes/la1.stl",
-        "robotis-op3/meshes/la2.stl",
-        "robotis-op3/meshes/la3.stl",
-        "robotis-op3/meshes/ll1.stl",
-        "robotis-op3/meshes/ll2.stl",
-        "robotis-op3/meshes/ll3.stl",
-        "robotis-op3/meshes/ll4.stl",
-        "robotis-op3/meshes/ll5.stl",
-        "robotis-op3/meshes/ll6.stl",
-        "robotis-op3/meshes/ra1.stl",
-        "robotis-op3/meshes/ra2.stl",
-        "robotis-op3/meshes/ra3.stl",
-        "robotis-op3/meshes/rl1.stl",
-        "robotis-op3/meshes/rl2.stl",
-        "robotis-op3/meshes/rl3.stl",
-        "robotis-op3/meshes/rl4.stl",
-        "robotis-op3/meshes/rl5.stl",
-        "robotis-op3/meshes/rl6.stl"
-      ]
-    },
-    {
-      "id": "universal-robots-ur5e",
-      "name": "Universal Robots UR5e",
-      "description": "Universal Robots UR5e collaborative manipulator.",
-      "urdf": "universal-robots-ur5e/model.urdf",
-      "assets": [
-        "universal-robots-ur5e/meshes/base.dae",
-        "universal-robots-ur5e/meshes/base.stl",
-        "universal-robots-ur5e/meshes/forearm.dae",
-        "universal-robots-ur5e/meshes/forearm.stl",
-        "universal-robots-ur5e/meshes/shoulder.dae",
-        "universal-robots-ur5e/meshes/shoulder.stl",
-        "universal-robots-ur5e/meshes/upperarm.dae",
-        "universal-robots-ur5e/meshes/upperarm.stl",
-        "universal-robots-ur5e/meshes/wrist1.dae",
-        "universal-robots-ur5e/meshes/wrist1.stl",
-        "universal-robots-ur5e/meshes/wrist2.dae",
-        "universal-robots-ur5e/meshes/wrist2.stl",
-        "universal-robots-ur5e/meshes/wrist3.dae",
-        "universal-robots-ur5e/meshes/wrist3.stl"
-      ]
-    },
-    {
-      "id": "kinova-jaco2-7dof",
-      "name": "Kinova JACO2 7-DOF",
-      "description": "Kinova JACO2 seven-degree-of-freedom arm with three-finger hand.",
-      "urdf": "kinova-jaco2-7dof/model.urdf",
-      "assets": [
-        "kinova-jaco2-7dof/meshes/arm_half_1.dae",
-        "kinova-jaco2-7dof/meshes/arm_half_2.dae",
-        "kinova-jaco2-7dof/meshes/base.dae",
-        "kinova-jaco2-7dof/meshes/finger_distal.dae",
-        "kinova-jaco2-7dof/meshes/finger_proximal.dae",
-        "kinova-jaco2-7dof/meshes/forearm.dae",
-        "kinova-jaco2-7dof/meshes/hand_3finger.dae",
-        "kinova-jaco2-7dof/meshes/ring_big.dae",
-        "kinova-jaco2-7dof/meshes/ring_small.dae",
-        "kinova-jaco2-7dof/meshes/shoulder.dae",
-        "kinova-jaco2-7dof/meshes/wrist_spherical_1.dae",
-        "kinova-jaco2-7dof/meshes/wrist_spherical_2.dae"
-      ]
-    },
-    {
-      "id": "franka-fr3",
-      "name": "Franka Research 3",
-      "description": "Franka Research 3 manipulator with Franka Hand.",
-      "urdf": "franka-fr3/model.urdf",
-      "assets": [
-        "franka-fr3/meshes/finger.dae",
-        "franka-fr3/meshes/hand.dae",
-        "franka-fr3/meshes/hand.stl",
-        "franka-fr3/meshes/link0.dae",
-        "franka-fr3/meshes/link0.stl",
-        "franka-fr3/meshes/link1.dae",
-        "franka-fr3/meshes/link1.stl",
-        "franka-fr3/meshes/link2.dae",
-        "franka-fr3/meshes/link2.stl",
-        "franka-fr3/meshes/link3.dae",
-        "franka-fr3/meshes/link3.stl",
-        "franka-fr3/meshes/link4.dae",
-        "franka-fr3/meshes/link4.stl",
-        "franka-fr3/meshes/link5.dae",
-        "franka-fr3/meshes/link5.stl",
-        "franka-fr3/meshes/link6.dae",
-        "franka-fr3/meshes/link6.stl",
-        "franka-fr3/meshes/link7.dae",
-        "franka-fr3/meshes/link7.stl"
-      ]
+      "id": "complex-hexapod",
+      "name": "Complex hexapod",
+      "description": "A six-legged robot with 18 actuated leg joints, articulated sensor tower and stereo camera.",
+      "urdf": "complex-hexapod/complex-hexapod.urdf",
+      "assets": []
     }
   ]
 }

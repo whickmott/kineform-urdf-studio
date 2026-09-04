@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<robot name="atlas_hexapod" version="1.0">
+  <material name="shell"><color rgba="0.78 0.18 0.12 1"/></material>
+  <material name="coxa"><color rgba="0.18 0.2 0.23 1"/></material>
+  <material name="femur"><color rgba="0.82 0.46 0.08 1"/></material>
+  <material name="tibia"><color rgba="0.24 0.27 0.31 1"/></material>
+  <material name="foot"><color rgba="0.045 0.05 0.055 1"/></material>
+  <material name="sensor"><color rgba="0.18 0.62 0.88 1"/></material>
+
+  <link name="body_link">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="14.5"/><inertia ixx="0.44" ixy="0" ixz="0" iyy="0.92" iyz="0" izz="1.18"/></inertial>
+    <visual><geometry><box size="1.08 0.56 0.22"/></geometry><material name="shell"/></visual>
+    <visual><origin xyz="0.18 0 0.15" rpy="0 0 0"/><geometry><box size="0.34 0.32 0.1"/></geometry><material name="coxa"/></visual>
+    <collision><geometry><box size="1.08 0.56 0.22"/></geometry></collision>
+  </link>
+
+  <link name="sensor_tower">
+    <inertial><origin xyz="0 0 0.12" rpy="0 0 0"/><mass value="0.8"/><inertia ixx="0.004" ixy="0" ixz="0" iyy="0.004" iyz="0" izz="0.003"/></inertial>
+    <visual><origin xyz="0 0 0.12" rpy="0 0 0"/><geometry><cylinder radius="0.09" length="0.24"/></geometry><material name="coxa"/></visual>
+    <collision><origin xyz="0 0 0.12" rpy="0 0 0"/><geometry><cylinder radius="0.09" length="0.24"/></geometry></collision>
+  </link>
+  <joint name="sensor_tower_joint" type="continuous"><parent link="body_link"/><child link="sensor_tower"/><origin xyz="0.28 0 0.16" rpy="0 0 0"/><axis xyz="0 0 1"/><limit effort="4" velocity="2"/></joint>
+
+  <link name="stereo_camera">
+    <inertial><mass value="0.3"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.0015"/></inertial>
+    <visual><geometry><box size="0.16 0.3 0.105"/></geometry><material name="sensor"/></visual>
+    <visual><origin xyz="0.085 0.09 0" rpy="0 1.5708 0"/><geometry><cylinder radius="0.034" length="0.025"/></geometry><material name="foot"/></visual>
+    <visual><origin xyz="0.085 -0.09 0" rpy="0 1.5708 0"/><geometry><cylinder radius="0.034" length="0.025"/></geometry><material name="foot"/></visual>
+    <collision><geometry><box size="0.16 0.3 0.105"/></geometry></collision>
+  </link>
+  <joint name="camera_tilt_joint" type="revolute"><parent link="sensor_tower"/><child link="stereo_camera"/><origin xyz="0.1 0 0.25" rpy="0 0 0"/><axis xyz="0 1 0"/><limit lower="-0.9" upper="0.55" effort="5" velocity="2"/></joint>
+
+  <link name="front_left_coxa">
+    <inertial><origin xyz="0 0.1 0" rpy="0 0 0"/><mass value="0.38"/><inertia ixx="0.0018" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0018"/></inertial>
+    <visual><origin xyz="0 0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry><material name="coxa"/></visual>
+    <collision><origin xyz="0 0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry></collision>
+  </link>
+  <joint name="front_left_hip_yaw" type="revolute"><parent link="body_link"/><child link="front_left_coxa"/><origin xyz="0.46 0.3 0" rpy="0 0 0"/><axis xyz="0 0 1"/><limit lower="-0.8" upper="0.8" effort="28" velocity="3"/><dynamics damping="0.12" friction="0.04"/></joint>
+
+  <link name="front_left_femur">
+    <inertial><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><mass value="0.72"/><inertia ixx="0.012" ixy="0" ixz="0" iyy="0.0018" iyz="0" izz="0.012"/></inertial>
+    <visual><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry><material name="femur"/></visual>
+    <collision><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry></collision>
+  </link>
+  <joint name="front_left_hip_pitch" type="revolute"><parent link="front_left_coxa"/><child link="front_left_femur"/><origin xyz="0 0.2 0" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-1.15" upper="1.15" effort="34" velocity="3"/><dynamics damping="0.14" friction="0.05"/></joint>
+
+  <link name="front_left_tibia">
+    <inertial><origin xyz="0 0 -0.25" rpy="0 0 0"/><mass value="0.58"/><inertia ixx="0.0125" ixy="0" ixz="0" iyy="0.0125" iyz="0" izz="0.0011"/></inertial>
+    <visual><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry><material name="tibia"/></visual>
+    <collision><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry></collision>
+  </link>
+  <joint name="front_left_knee" type="revolute"><parent link="front_left_femur"/><child link="front_left_tibia"/><origin xyz="0 0.39 -0.18" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-2.35" upper="0.25" effort="38" velocity="3.5"/><dynamics damping="0.16" friction="0.06"/></joint>
+
+  <link name="front_left_foot">
+    <inertial><mass value="0.11"/><inertia ixx="0.00016" ixy="0" ixz="0" iyy="0.00016" iyz="0" izz="0.00016"/></inertial>
+    <visual><geometry><sphere radius="0.062"/></geometry><material name="foot"/></visual>
+    <collision><geometry><sphere radius="0.062"/></geometry></collision>
+  </link>
+  <joint name="front_left_ankle" type="fixed"><parent link="front_left_tibia"/><child link="front_left_foot"/><origin xyz="0 0 -0.53" rpy="0 0 0"/></joint>
+
+  <link name="middle_left_coxa">
+    <inertial><origin xyz="0 0.1 0" rpy="0 0 0"/><mass value="0.38"/><inertia ixx="0.0018" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0018"/></inertial>
+    <visual><origin xyz="0 0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry><material name="coxa"/></visual>
+    <collision><origin xyz="0 0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry></collision>
+  </link>
+  <joint name="middle_left_hip_yaw" type="revolute"><parent link="body_link"/><child link="middle_left_coxa"/><origin xyz="0 0.34 0" rpy="0 0 0"/><axis xyz="0 0 1"/><limit lower="-0.8" upper="0.8" effort="28" velocity="3"/><dynamics damping="0.12" friction="0.04"/></joint>
+
+  <link name="middle_left_femur">
+    <inertial><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><mass value="0.72"/><inertia ixx="0.012" ixy="0" ixz="0" iyy="0.0018" iyz="0" izz="0.012"/></inertial>
+    <visual><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry><material name="femur"/></visual>
+    <collision><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry></collision>
+  </link>
+  <joint name="middle_left_hip_pitch" type="revolute"><parent link="middle_left_coxa"/><child link="middle_left_femur"/><origin xyz="0 0.2 0" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-1.15" upper="1.15" effort="34" velocity="3"/><dynamics damping="0.14" friction="0.05"/></joint>
+
+  <link name="middle_left_tibia">
+    <inertial><origin xyz="0 0 -0.25" rpy="0 0 0"/><mass value="0.58"/><inertia ixx="0.0125" ixy="0" ixz="0" iyy="0.0125" iyz="0" izz="0.0011"/></inertial>
+    <visual><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry><material name="tibia"/></visual>
+    <collision><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry></collision>
+  </link>
+  <joint name="middle_left_knee" type="revolute"><parent link="middle_left_femur"/><child link="middle_left_tibia"/><origin xyz="0 0.39 -0.18" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-2.35" upper="0.25" effort="38" velocity="3.5"/><dynamics damping="0.16" friction="0.06"/></joint>
+
+  <link name="middle_left_foot">
+    <inertial><mass value="0.11"/><inertia ixx="0.00016" ixy="0" ixz="0" iyy="0.00016" iyz="0" izz="0.00016"/></inertial>
+    <visual><geometry><sphere radius="0.062"/></geometry><material name="foot"/></visual>
+    <collision><geometry><sphere radius="0.062"/></geometry></collision>
+  </link>
+  <joint name="middle_left_ankle" type="fixed"><parent link="middle_left_tibia"/><child link="middle_left_foot"/><origin xyz="0 0 -0.53" rpy="0 0 0"/></joint>
+
+  <link name="rear_left_coxa">
+    <inertial><origin xyz="0 0.1 0" rpy="0 0 0"/><mass value="0.38"/><inertia ixx="0.0018" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0018"/></inertial>
+    <visual><origin xyz="0 0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry><material name="coxa"/></visual>
+    <collision><origin xyz="0 0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry></collision>
+  </link>
+  <joint name="rear_left_hip_yaw" type="revolute"><parent link="body_link"/><child link="rear_left_coxa"/><origin xyz="-0.46 0.3 0" rpy="0 0 0"/><axis xyz="0 0 1"/><limit lower="-0.8" upper="0.8" effort="28" velocity="3"/><dynamics damping="0.12" friction="0.04"/></joint>
+
+  <link name="rear_left_femur">
+    <inertial><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><mass value="0.72"/><inertia ixx="0.012" ixy="0" ixz="0" iyy="0.0018" iyz="0" izz="0.012"/></inertial>
+    <visual><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry><material name="femur"/></visual>
+    <collision><origin xyz="0 0.21 -0.09" rpy="-0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry></collision>
+  </link>
+  <joint name="rear_left_hip_pitch" type="revolute"><parent link="rear_left_coxa"/><child link="rear_left_femur"/><origin xyz="0 0.2 0" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-1.15" upper="1.15" effort="34" velocity="3"/><dynamics damping="0.14" friction="0.05"/></joint>
+
+  <link name="rear_left_tibia">
+    <inertial><origin xyz="0 0 -0.25" rpy="0 0 0"/><mass value="0.58"/><inertia ixx="0.0125" ixy="0" ixz="0" iyy="0.0125" iyz="0" izz="0.0011"/></inertial>
+    <visual><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry><material name="tibia"/></visual>
+    <collision><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry></collision>
+  </link>
+  <joint name="rear_left_knee" type="revolute"><parent link="rear_left_femur"/><child link="rear_left_tibia"/><origin xyz="0 0.39 -0.18" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-2.35" upper="0.25" effort="38" velocity="3.5"/><dynamics damping="0.16" friction="0.06"/></joint>
+
+  <link name="rear_left_foot">
+    <inertial><mass value="0.11"/><inertia ixx="0.00016" ixy="0" ixz="0" iyy="0.00016" iyz="0" izz="0.00016"/></inertial>
+    <visual><geometry><sphere radius="0.062"/></geometry><material name="foot"/></visual>
+    <collision><geometry><sphere radius="0.062"/></geometry></collision>
+  </link>
+  <joint name="rear_left_ankle" type="fixed"><parent link="rear_left_tibia"/><child link="rear_left_foot"/><origin xyz="0 0 -0.53" rpy="0 0 0"/></joint>
+
+  <link name="front_right_coxa">
+    <inertial><origin xyz="0 -0.1 0" rpy="0 0 0"/><mass value="0.38"/><inertia ixx="0.0018" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0018"/></inertial>
+    <visual><origin xyz="0 -0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry><material name="coxa"/></visual>
+    <collision><origin xyz="0 -0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry></collision>
+  </link>
+  <joint name="front_right_hip_yaw" type="revolute"><parent link="body_link"/><child link="front_right_coxa"/><origin xyz="0.46 -0.3 0" rpy="0 0 0"/><axis xyz="0 0 1"/><limit lower="-0.8" upper="0.8" effort="28" velocity="3"/><dynamics damping="0.12" friction="0.04"/></joint>
+
+  <link name="front_right_femur">
+    <inertial><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><mass value="0.72"/><inertia ixx="0.012" ixy="0" ixz="0" iyy="0.0018" iyz="0" izz="0.012"/></inertial>
+    <visual><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry><material name="femur"/></visual>
+    <collision><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry></collision>
+  </link>
+  <joint name="front_right_hip_pitch" type="revolute"><parent link="front_right_coxa"/><child link="front_right_femur"/><origin xyz="0 -0.2 0" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-1.15" upper="1.15" effort="34" velocity="3"/><dynamics damping="0.14" friction="0.05"/></joint>
+
+  <link name="front_right_tibia">
+    <inertial><origin xyz="0 0 -0.25" rpy="0 0 0"/><mass value="0.58"/><inertia ixx="0.0125" ixy="0" ixz="0" iyy="0.0125" iyz="0" izz="0.0011"/></inertial>
+    <visual><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry><material name="tibia"/></visual>
+    <collision><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry></collision>
+  </link>
+  <joint name="front_right_knee" type="revolute"><parent link="front_right_femur"/><child link="front_right_tibia"/><origin xyz="0 -0.39 -0.18" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-2.35" upper="0.25" effort="38" velocity="3.5"/><dynamics damping="0.16" friction="0.06"/></joint>
+
+  <link name="front_right_foot">
+    <inertial><mass value="0.11"/><inertia ixx="0.00016" ixy="0" ixz="0" iyy="0.00016" iyz="0" izz="0.00016"/></inertial>
+    <visual><geometry><sphere radius="0.062"/></geometry><material name="foot"/></visual>
+    <collision><geometry><sphere radius="0.062"/></geometry></collision>
+  </link>
+  <joint name="front_right_ankle" type="fixed"><parent link="front_right_tibia"/><child link="front_right_foot"/><origin xyz="0 0 -0.53" rpy="0 0 0"/></joint>
+
+  <link name="middle_right_coxa">
+    <inertial><origin xyz="0 -0.1 0" rpy="0 0 0"/><mass value="0.38"/><inertia ixx="0.0018" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0018"/></inertial>
+    <visual><origin xyz="0 -0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry><material name="coxa"/></visual>
+    <collision><origin xyz="0 -0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry></collision>
+  </link>
+  <joint name="middle_right_hip_yaw" type="revolute"><parent link="body_link"/><child link="middle_right_coxa"/><origin xyz="0 -0.34 0" rpy="0 0 0"/><axis xyz="0 0 1"/><limit lower="-0.8" upper="0.8" effort="28" velocity="3"/><dynamics damping="0.12" friction="0.04"/></joint>
+
+  <link name="middle_right_femur">
+    <inertial><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><mass value="0.72"/><inertia ixx="0.012" ixy="0" ixz="0" iyy="0.0018" iyz="0" izz="0.012"/></inertial>
+    <visual><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry><material name="femur"/></visual>
+    <collision><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry></collision>
+  </link>
+  <joint name="middle_right_hip_pitch" type="revolute"><parent link="middle_right_coxa"/><child link="middle_right_femur"/><origin xyz="0 -0.2 0" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-1.15" upper="1.15" effort="34" velocity="3"/><dynamics damping="0.14" friction="0.05"/></joint>
+
+  <link name="middle_right_tibia">
+    <inertial><origin xyz="0 0 -0.25" rpy="0 0 0"/><mass value="0.58"/><inertia ixx="0.0125" ixy="0" ixz="0" iyy="0.0125" iyz="0" izz="0.0011"/></inertial>
+    <visual><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry><material name="tibia"/></visual>
+    <collision><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry></collision>
+  </link>
+  <joint name="middle_right_knee" type="revolute"><parent link="middle_right_femur"/><child link="middle_right_tibia"/><origin xyz="0 -0.39 -0.18" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-2.35" upper="0.25" effort="38" velocity="3.5"/><dynamics damping="0.16" friction="0.06"/></joint>
+
+  <link name="middle_right_foot">
+    <inertial><mass value="0.11"/><inertia ixx="0.00016" ixy="0" ixz="0" iyy="0.00016" iyz="0" izz="0.00016"/></inertial>
+    <visual><geometry><sphere radius="0.062"/></geometry><material name="foot"/></visual>
+    <collision><geometry><sphere radius="0.062"/></geometry></collision>
+  </link>
+  <joint name="middle_right_ankle" type="fixed"><parent link="middle_right_tibia"/><child link="middle_right_foot"/><origin xyz="0 0 -0.53" rpy="0 0 0"/></joint>
+
+  <link name="rear_right_coxa">
+    <inertial><origin xyz="0 -0.1 0" rpy="0 0 0"/><mass value="0.38"/><inertia ixx="0.0018" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0018"/></inertial>
+    <visual><origin xyz="0 -0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry><material name="coxa"/></visual>
+    <collision><origin xyz="0 -0.1 0" rpy="0 0 0"/><geometry><box size="0.11 0.2 0.09"/></geometry></collision>
+  </link>
+  <joint name="rear_right_hip_yaw" type="revolute"><parent link="body_link"/><child link="rear_right_coxa"/><origin xyz="-0.46 -0.3 0" rpy="0 0 0"/><axis xyz="0 0 1"/><limit lower="-0.8" upper="0.8" effort="28" velocity="3"/><dynamics damping="0.12" friction="0.04"/></joint>
+
+  <link name="rear_right_femur">
+    <inertial><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><mass value="0.72"/><inertia ixx="0.012" ixy="0" ixz="0" iyy="0.0018" iyz="0" izz="0.012"/></inertial>
+    <visual><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry><material name="femur"/></visual>
+    <collision><origin xyz="0 -0.21 -0.09" rpy="0.46 0 0"/><geometry><box size="0.105 0.44 0.1"/></geometry></collision>
+  </link>
+  <joint name="rear_right_hip_pitch" type="revolute"><parent link="rear_right_coxa"/><child link="rear_right_femur"/><origin xyz="0 -0.2 0" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-1.15" upper="1.15" effort="34" velocity="3"/><dynamics damping="0.14" friction="0.05"/></joint>
+
+  <link name="rear_right_tibia">
+    <inertial><origin xyz="0 0 -0.25" rpy="0 0 0"/><mass value="0.58"/><inertia ixx="0.0125" ixy="0" ixz="0" iyy="0.0125" iyz="0" izz="0.0011"/></inertial>
+    <visual><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry><material name="tibia"/></visual>
+    <collision><origin xyz="0 0 -0.25" rpy="0 0 0"/><geometry><box size="0.085 0.085 0.5"/></geometry></collision>
+  </link>
+  <joint name="rear_right_knee" type="revolute"><parent link="rear_right_femur"/><child link="rear_right_tibia"/><origin xyz="0 -0.39 -0.18" rpy="0 0 0"/><axis xyz="1 0 0"/><limit lower="-2.35" upper="0.25" effort="38" velocity="3.5"/><dynamics damping="0.16" friction="0.06"/></joint>
+
+  <link name="rear_right_foot">
+    <inertial><mass value="0.11"/><inertia ixx="0.00016" ixy="0" ixz="0" iyy="0.00016" iyz="0" izz="0.00016"/></inertial>
+    <visual><geometry><sphere radius="0.062"/></geometry><material name="foot"/></visual>
+    <collision><geometry><sphere radius="0.062"/></geometry></collision>
+  </link>
+  <joint name="rear_right_ankle" type="fixed"><parent link="rear_right_tibia"/><child link="rear_right_foot"/><origin xyz="0 0 -0.53" rpy="0 0 0"/></joint>
+</robot>
