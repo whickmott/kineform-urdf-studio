@@ -1,0 +1,17 @@
+Franka Emika Panda
+
+Upstream source:
+https://github.com/StanfordASL/PandaRobot.jl
+
+Upstream URDF:
+https://github.com/StanfordASL/PandaRobot.jl/blob/master/deps/Panda/panda.urdf
+
+Licence: MIT
+Copyright (c) 2018 Stanford Autonomous Systems Lab
+
+KineForm changes:
+- Removed the unused Xacro namespace/header from the generated plain URDF.
+- Omitted safety_controller elements that are outside KineForm's structured editor.
+- Retained the upstream kinematic transforms, joint limits, mesh references and mimic joint.
+
+Mesh files are loaded from the same upstream repository through jsDelivr.

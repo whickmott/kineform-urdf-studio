@@ -1,0 +1,18 @@
+ROS URDF Tutorial model
+
+Upstream source:
+https://github.com/ros/urdf_tutorial
+
+Reference URDF:
+https://github.com/ros/urdf_tutorial/blob/ros2/urdf/07-physics.urdf
+
+Licence: BSD 3-Clause
+
+KineForm changes:
+- Kept the tutorial's R2D2-like structure as a compact example.
+- Retained the official DAE finger and fingertip mesh references.
+- Included representative continuous, revolute, prismatic and fixed joints,
+  collision geometry, inertial data and joint dynamics.
+
+The DAE meshes and their TIFF textures are loaded from the same upstream
+repository through jsDelivr.

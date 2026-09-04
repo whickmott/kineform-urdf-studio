@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!--
+  ROS URDF Tutorial example.
+  Adapted from ros/urdf_tutorial, particularly urdf/07-physics.urdf:
+  https://github.com/ros/urdf_tutorial
+  Upstream licence: BSD 3-Clause.
+  The finger DAE meshes and their TIFF textures are the upstream tutorial
+  assets. See LICENSE and SOURCE.txt in this directory.
+-->
+<robot name="ros_urdf_tutorial">
+  <material name="blue"><color rgba="0 0 0.8 1"/></material>
+  <material name="white"><color rgba="1 1 1 1"/></material>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.2" length="0.6"/></geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.2" length="0.6"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="0.4" ixy="0" ixz="0" iyy="0.4" iyz="0" izz="0.2"/>
+    </inertial>
+  </link>
+
+  <link name="head">
+    <visual><geometry><sphere radius="0.2"/></geometry><material name="white"/></visual>
+    <collision><geometry><sphere radius="0.2"/></geometry></collision>
+    <inertial><mass value="2"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <joint name="head_swivel" type="continuous">
+    <parent link="base_link"/>
+    <child link="head"/>
+    <origin xyz="0 0 0.8" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.7" friction="0.0"/>
+  </joint>
+
+  <link name="gripper_pole">
+    <visual>
+      <origin xyz="0.1 0 0" rpy="0 1.5708 0"/>
+      <geometry><cylinder length="0.2" radius="0.01"/></geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0.1 0 0" rpy="0 1.5708 0"/>
+      <geometry><cylinder length="0.2" radius="0.01"/></geometry>
+    </collision>
+    <inertial><mass value="0.1"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+  <joint name="gripper_extension" type="prismatic">
+    <parent link="base_link"/>
+    <child link="gripper_pole"/>
+    <origin xyz="0.19 0 0.2" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1000" lower="-0.38" upper="0" velocity="0.5"/>
+  </joint>
+
+  <link name="left_gripper">
+    <visual><geometry><mesh filename="package://urdf_tutorial/meshes/l_finger.dae"/></geometry></visual>
+    <collision><geometry><mesh filename="package://urdf_tutorial/meshes/l_finger.dae"/></geometry></collision>
+    <inertial><mass value="0.05"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+  <joint name="left_gripper_joint" type="revolute">
+    <parent link="gripper_pole"/>
+    <child link="left_gripper"/>
+    <origin xyz="0.2 0.01 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000" lower="0" upper="0.548" velocity="0.5"/>
+  </joint>
+
+  <link name="left_tip">
+    <visual>
+      <origin xyz="0.09137 0.00495 0" rpy="0 0 0"/>
+      <geometry><mesh filename="package://urdf_tutorial/meshes/l_finger_tip.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.09137 0.00495 0" rpy="0 0 0"/>
+      <geometry><mesh filename="package://urdf_tutorial/meshes/l_finger_tip.dae"/></geometry>
+    </collision>
+    <inertial><mass value="0.05"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+  <joint name="left_tip_joint" type="fixed">
+    <parent link="left_gripper"/>
+    <child link="left_tip"/>
+  </joint>
+
+  <link name="right_gripper">
+    <visual>
+      <origin xyz="0 0 0" rpy="-3.1415 0 0"/>
+      <geometry><mesh filename="package://urdf_tutorial/meshes/l_finger.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="-3.1415 0 0"/>
+      <geometry><mesh filename="package://urdf_tutorial/meshes/l_finger.dae"/></geometry>
+    </collision>
+    <inertial><mass value="0.05"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+  <joint name="right_gripper_joint" type="revolute">
+    <parent link="gripper_pole"/>
+    <child link="right_gripper"/>
+    <origin xyz="0.2 -0.01 0" rpy="0 0 0"/>
+    <axis xyz="0 0 -1"/>
+    <limit effort="1000" lower="0" upper="0.548" velocity="0.5"/>
+  </joint>
+
+  <link name="right_tip">
+    <visual>
+      <origin xyz="0.09137 0.00495 0" rpy="-3.1415 0 0"/>
+      <geometry><mesh filename="package://urdf_tutorial/meshes/l_finger_tip.dae"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.09137 0.00495 0" rpy="-3.1415 0 0"/>
+      <geometry><mesh filename="package://urdf_tutorial/meshes/l_finger_tip.dae"/></geometry>
+    </collision>
+    <inertial><mass value="0.05"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+  <joint name="right_tip_joint" type="fixed">
+    <parent link="right_gripper"/>
+    <child link="right_tip"/>
+  </joint>
+</robot>
