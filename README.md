@@ -2,7 +2,7 @@
 
 KineForm URDF Studio is a browser-based workspace for creating, inspecting, editing and validating URDF robot models.
 
-Live application: https://whickmott.github.io/urdf/
+Live application: https://whickmott.github.io/kineform-urdf-studio/
 
 ## Features
 
@@ -21,17 +21,6 @@ Live application: https://whickmott.github.io/urdf/
 - Configurable 3D viewport
 - Browser-local asset library
 - Manifest-driven bundled examples
-
-## Structure
-
-```text
-index.html
-styles.css
-src/
-assets/
-```
-
-The application is static and uses relative paths, so the repository itself is served at `/urdf/` on the KineForm website.
 
 ## Contributing
 
